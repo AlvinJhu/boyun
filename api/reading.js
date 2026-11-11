@@ -2,7 +2,8 @@
 // 需要在 Vercel 專案設定環境變數 ANTHROPIC_API_KEY。
 import Anthropic from "@anthropic-ai/sdk";
 
-const client = new Anthropic(); // 讀取 ANTHROPIC_API_KEY
+let _client = null;
+const getClient = () => (_client ||= new Anthropic()); // 讀取 ANTHROPIC_API_KEY
 const MAX_PROMPT_CHARS = 8000;
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const hits = new Map(); // 簡易限流：每個 IP 每 10 分鐘 5 次（單一執行個體內有效）
@@ -23,7 +24,29 @@ function parseJson(text) {
   return JSON.parse(raw);
 }
 
+const REQUEST_BASE = {
+  model: "claude-opus-5-5",
+  system: SYSTEM,
+  output_config: { effort: "medium" },
+  betas: ["server-side-fallback-2026-07-01"],
+  fallbacks: "default",
+};
+
+async function health(req, res) {
+  const out = { hasKey: !!process.env.ANTHROPIC_API_KEY, model: REQUEST_BASE.model };
+  if (req.query && req.query.ping === "1") {
+    try {
+      const r = await getClient().beta.messages.create({ ...REQUEST_BASE, max_tokens: 64, messages: [{ role: "user", content: "回覆「OK」兩個字。" }] });
+      out.ping = { ok: true, stop_reason: r.stop_reason };
+    } catch (error) {
+      out.ping = { ok: false, status: error && error.status, type: error && error.error && error.error.error && error.error.error.type, message: String((error && error.message) || error).slice(0, 300) };
+    }
+  }
+  return res.status(200).json(out);
+}
+
 export default async function handler(req, res) {
+  if (req.method === "GET") return health(req, res);
   if (req.method !== "POST") return res.status(405).json({ code: "method_not_allowed" });
   const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "unknown";
   if (limited(ip)) return res.status(429).json({ code: "rate_limited" });
@@ -43,15 +66,7 @@ export default async function handler(req, res) {
 
   try {
     // 照片只存在於這次請求的記憶體中，不寫入任何儲存空間。
-    const response = await client.beta.messages.create({
-      model: "claude-opus-5-5",
-      max_tokens: 16000,
-      system: SYSTEM,
-      output_config: { effort: "medium" },
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-      messages: [{ role: "user", content }],
-    });
+    const response = await getClient().beta.messages.create({ ...REQUEST_BASE, max_tokens: 16000, messages: [{ role: "user", content }] });
     if (response.stop_reason === "refusal") return res.status(422).json({ code: "refused" });
     if (response.stop_reason === "max_tokens") return res.status(502).json({ code: "truncated" });
     const text = response.content.filter((b) => b.type === "text").map((b) => b.text).join("");
@@ -64,7 +79,8 @@ export default async function handler(req, res) {
     if (error instanceof Anthropic.RateLimitError) return res.status(429).json({ code: "rate_limited" });
     if (error instanceof Anthropic.AuthenticationError) return res.status(500).json({ code: "server_misconfigured" });
     if (error instanceof Anthropic.BadRequestError) return res.status(400).json({ code: "bad_request" });
-    if (error instanceof Anthropic.APIError) return res.status(502).json({ code: "upstream_error" });
+    if (error instanceof Anthropic.APIError) return res.status(502).json({ code: "upstream_error", status: error.status });
+    console.error(error);
     return res.status(500).json({ code: "server_error" });
   }
 }

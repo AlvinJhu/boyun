@@ -541,7 +541,7 @@ $('f').addEventListener('submit',async e=>{
     st.textContent=file&&!canImg?"完成。此環境無法傳送圖片，手相未判讀。":"完成。結果僅供參考。";
   }catch(err){
     const map={not_granted:"你未允許本頁使用 Claude，AI 解讀已略過。",rate_limited:"使用次數已達上限，請稍後再試。",refused:"這次的內容無法解讀，請調整提問後再試。",network:"網路連線失敗，請檢查連線後再試。",invalid_json:"AI 回覆格式有誤，請再按一次「開始解析」。",cancelled:"已取消。"};
-    st.textContent=map[err&&err.code]||"AI 解讀暫時失敗，請稍後再試。";
+    st.textContent=map[err&&err.code]||("AI 解讀暫時失敗，請稍後再試。（錯誤代碼："+((err&&err.code)||"unknown")+"）");
     $('aiOut').innerHTML='<p class="placeholder">AI 解讀沒有完成，上方八字與星盤結果不受影響。</p>';
   }finally{
     $('go').disabled=false;
