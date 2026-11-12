@@ -561,7 +561,7 @@ async function shrinkImage(file){
 const SITE_AI={
   limits:async()=>({images:{maxCount:1}}),
   json:async(prompt,opts)=>{
-    const body={prompt};
+    const body={prompt,kind:(opts&&opts.kind)||'read'};
     if(opts&&opts.images&&opts.images[0])body.image={media_type:'image/jpeg',data:await shrinkImage(opts.images[0])};
     let res;try{res=await fetch('/api/reading',{method:'POST',headers:{'Content-Type':'application/json','X-Device-Id':deviceId()},body:JSON.stringify(body)});}catch(_){throw {code:'network'};}
     const data=await res.json().catch(()=>({code:'invalid_json'}));
@@ -592,7 +592,7 @@ $('f').addEventListener('submit',async e=>{
     renderAI(r||{},sendPhoto,qMode);qUse('read');
     st.textContent=file&&!canImg?"完成。此環境無法傳送圖片，手相未判讀。":"完成。結果僅供參考。";
   }catch(err){
-    const map={not_granted:"你未允許本頁使用 Claude，AI 解讀已略過。",rate_limited:"使用次數已達上限，請稍後再試。",refused:"這次的內容無法解讀，請調整提問後再試。",network:"網路連線失敗，請檢查連線後再試。",invalid_json:"AI 回覆格式有誤，請再按一次「開始解析」。",cancelled:"已取消。"};
+    const map={daily_limit:"今天的 2 次免費 AI 解讀已用完，明天 00:00 重置。",quota_unavailable:"額度系統暫時無法使用，請稍後再試。",not_granted:"你未允許本頁使用 Claude，AI 解讀已略過。",rate_limited:"使用次數已達上限，請稍後再試。",refused:"這次的內容無法解讀，請調整提問後再試。",network:"網路連線失敗，請檢查連線後再試。",invalid_json:"AI 回覆格式有誤，請再按一次「開始解析」。",cancelled:"已取消。"};
     st.textContent=map[err&&err.code]||("AI 解讀暫時失敗，請稍後再試。（錯誤代碼："+((err&&err.code)||"unknown")+"）");
     $('aiOut').innerHTML='<p class="placeholder">AI 解讀沒有完成，上方八字與星盤結果不受影響。</p>';
   }finally{
@@ -654,8 +654,8 @@ $('deepBtn').addEventListener('click',async()=>{
   if(!sample){st.textContent='這個檢視環境無法使用 AI，報告無法產生。';return}
   if(qLeft('deep')<=0){st.textContent='今天的 2 份試用報告已用完，明天 00:00 重置。';return}
   $('deepBtn').disabled=true;st.innerHTML='<span class="spin">✶</span> 報告撰寫中，約需 40–90 秒…';
-  try{const r=await sample.json(tw(buildReportPrompt(lastCalc)),{modelTier:"default"});lastReport=r||{};renderReport(lastReport);qUse('deep');st.textContent='完成。報告在下方。';$('reportOut').scrollIntoView({behavior:'smooth',block:'start'});}
-  catch(err){const map={not_granted:"你未允許本頁使用 Claude，報告無法產生。",rate_limited:"使用次數已達上限，請稍後再試。",invalid_json:"AI 回覆格式有誤，請再按一次。",network:"網路連線失敗，請稍後再試。"};st.textContent=map[err&&err.code]||('報告產生失敗，請稍後再試。（錯誤代碼：'+((err&&err.code)||'unknown')+'）');}
+  try{const r=await sample.json(tw(buildReportPrompt(lastCalc)),(inArtifact?{modelTier:"default"}:{modelTier:"default",kind:"deep"}));lastReport=r||{};renderReport(lastReport);qUse('deep');st.textContent='完成。報告在下方。';$('reportOut').scrollIntoView({behavior:'smooth',block:'start'});}
+  catch(err){const map={daily_limit:"今天的 2 份試用報告已用完，明天 00:00 重置。",quota_unavailable:"額度系統暫時無法使用，請稍後再試。",not_granted:"你未允許本頁使用 Claude，報告無法產生。",rate_limited:"使用次數已達上限，請稍後再試。",invalid_json:"AI 回覆格式有誤，請再按一次。",network:"網路連線失敗，請稍後再試。"};st.textContent=map[err&&err.code]||('報告產生失敗，請稍後再試。（錯誤代碼：'+((err&&err.code)||'unknown')+'）');}
   finally{$('deepBtn').disabled=false;}
 });
 
