@@ -116,6 +116,20 @@ footer strong{color:var(--cloud)}
 .dist span{border:1px solid var(--line);border-radius:8px;padding:2px 10px;font-variant-numeric:tabular-nums}
 .dist span.hi{border-color:var(--gold);color:var(--gold)}
 .w-h{font-size:17px;margin:22px 0 4px}
+#guide{display:none}body.guide-mode #guide{display:block}
+body.guide-mode .wrap>*:not(header):not(#guide):not(footer){display:none!important}
+.back-link{color:var(--gold);text-decoration:none;font-size:14px}
+.g-sec{margin-top:16px}.g-sec h2{font-size:21px;margin-bottom:10px}
+.g-steps,.g-rules{margin:0;padding-left:22px;display:grid;gap:10px}.g-steps li b{display:block;color:var(--cloud)}.g-steps li span{color:var(--muted);font-size:14px}
+.g-rules li{font-size:14.5px}.g-rules b{color:var(--gold);font-weight:600}
+.g-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.g-grid h4{margin:0 0 4px;font-size:15px;color:var(--gold)}.g-grid p{margin:0;font-size:14px;color:var(--muted)}
+.price{font-size:12px;border:1px solid var(--gold);border-radius:6px;padding:0 6px;margin-left:4px;color:var(--gold)}
+.g-dl{display:grid;grid-template-columns:110px 1fr;gap:8px 14px;margin:0}.g-dl dt{color:var(--gold)}.g-dl dd{margin:0;font-size:14px}
+@media (max-width:620px){.g-dl{grid-template-columns:1fr;gap:2px}.g-dl dd{margin-bottom:8px}}
+details{border-top:1px solid var(--line);padding:10px 0}details summary{cursor:pointer;color:var(--cloud)}details p{margin:6px 0 0;color:var(--muted);font-size:14px}
+.pair-score{display:flex;gap:16px;align-items:center}
+.ring{--p:70;width:96px;height:96px;border-radius:50%;flex:none;display:grid;place-content:center;text-align:center;background:radial-gradient(closest-side,var(--panel) 78%,transparent 80%),conic-gradient(var(--gold) calc(var(--p)*1%),var(--line) 0)}
+.ring b{font-family:var(--display);font-size:30px;line-height:1;color:var(--gold)}.ring small{font-size:11px;color:var(--muted)}
 .nm-chars{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 14px}.nm-chars>div{display:flex;flex-direction:column;align-items:center;min-width:64px;padding:8px 10px;border:1px solid var(--line);border-radius:10px}.nm-c{font-family:"Noto Serif TC",serif;font-size:30px;line-height:1.2;color:var(--gold)}.nm-k{font-size:12px;color:var(--muted)}
 .daily-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
 .daily-head h2{font-size:24px}
@@ -136,7 +150,7 @@ footer strong{color:var(--cloud)}
       <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="22" r="9" fill="#E8B04B"/><g stroke="#E8B04B" stroke-width="1.6" stroke-linecap="round"><path d="M20 6v4M8 12l3 3M32 12l-3 3M4 22h4M32 22h4"/></g><path d="M3 30c4-5 9-5 12-2 3-4 10-4 12 1 3-2 8-1 10 2H3z" fill="#8E86B5"/><path d="M6 34h28" stroke="#F5F3EE" stroke-width="1.2" stroke-linecap="round" opacity=".5"/></svg>
       <div><b>撥雲見日</b><small>Clear Sky Destiny</small></div>
     </div>
-    <nav class="nav" aria-label="主選單"><a href="#daily">今日運勢</a><a href="#bazi">八字流年</a><a href="#astro">星盤解讀</a><a href="#palm-sec">手相解析</a><a href="#ask">問事推薦</a></nav>
+    <nav class="nav" aria-label="主選單"><a href="#daily">今日運勢</a><a href="#bazi">八字流年</a><a href="#astro">星盤解讀</a><a href="#palm-sec">手相解析</a><a href="#ask">問事推薦</a><a href="#pair">雙人合盤</a><a href="#guide">使用說明</a></nav>
   </header>
 
   <p class="notice" role="note">本站命盤、塔羅與幸運色由規則運算與資料庫生成；綜合解讀、手相與深度報告由 AI 撰寫。內容僅供娛樂與自我探索參考，不構成醫療、法律、投資或任何專業建議。完整聲明見頁尾。</p>
@@ -171,9 +185,10 @@ footer strong{color:var(--cloud)}
     <ul>
       <li>八字命盤、流年批示、星盤運算、姓名學五格、每日塔羅、姓名幸運色：<b>不限次數</b>。</li>
       <li>AI 綜合解讀（按「開始解析」）：每台裝置每天免費 <b>2 次</b>，今日剩 <b class="q-left" data-k="read">2</b> 次。</li>
-      <li>深度報告試用：每台裝置每天 <b>2 份</b>，今日剩 <b class="q-left" data-k="deep">2</b> 份。</li>
+      <li>深度報告（NT$99）試用：每台裝置每天 <b>2 份</b>，今日剩 <b class="q-left" data-k="deep">2</b> 份。</li>
+      <li>雙人合盤（NT$199）試用：契合度不限次數；AI 相處分析每天 <b>2 份</b>，今日剩 <b class="q-left" data-k="pair">2</b> 份。</li>
       <li>次數於台灣時間 00:00 重置；AI 沒有成功產生結果時不扣次數。會員上線後改以帳號計算，同一帳號換裝置共用額度。</li>
-    </ul></div>
+    </ul><p style="margin:8px 0 0"><a href="#guide" class="back-link">完整使用說明與規則 →</a></p></div>
 
   <form class="card" id="f" novalidate>
     <div class="grid">
@@ -258,10 +273,94 @@ footer strong{color:var(--cloud)}
   <section class="result" id="ask">
     <div id="askOut"></div>
     <div class="paywall">
-      <div><b>深度報告 NT$299</b><span class="tag trial" style="margin-left:8px">試用中</span><div class="hint">三系統交叉解讀＋未來 12 個月逐月建議＋PDF。測試期間免費，每台裝置每天 2 份，今日剩 <b class="q-left" data-k="deep">2</b> 份。</div></div>
+      <div><b>深度報告 NT$99</b><span class="tag trial" style="margin-left:8px">試用中</span><div class="hint">三系統交叉解讀＋未來 12 個月逐月建議＋PDF。測試期間免費，每台裝置每天 2 份，今日剩 <b class="q-left" data-k="deep">2</b> 份。</div></div>
       <div style="display:grid;gap:6px;justify-items:end"><button class="btn-gold" type="button" id="deepBtn">免費試用</button><span class="status" id="deepSt" aria-live="polite"></span></div>
     </div>
     <div id="reportOut"></div>
+  </section>
+
+  <section class="result" id="pair" aria-labelledby="h-pair">
+    <div class="card">
+      <div class="sec-head"><h2 id="h-pair">雙人合盤</h2><span class="tag trial">NT$199・試用中</span></div>
+      <p class="hint" style="margin:4px 0 12px">比對你（上方表單）和對方的八字與星座，看兩人怎麼相處、適不適合。輸入對方資料前，請先取得對方同意。</p>
+      <form id="pairForm" novalidate style="display:grid;gap:14px">
+        <div class="grid">
+          <div><label for="pName">對方稱呼（選填）</label><input id="pName" maxlength="10" placeholder="例如：小美"></div>
+          <div><label for="pBirth">對方國曆生日</label><input type="date" id="pBirth" min="1900-01-01" max="2100-12-31" value="1992-03-06"></div>
+          <div><label for="pHour">對方出生時辰</label><select id="pHour"></select></div>
+          <div><label for="pGender">對方性別</label><select id="pGender"><option value="1" selected>男</option><option value="0">女</option></select></div>
+          <div><label for="pRel">關係</label><select id="pRel"><option>伴侶／交往中</option><option>曖昧／追求中</option><option>夫妻</option><option>朋友</option><option>工作夥伴</option></select></div>
+        </div>
+        <div class="actions"><button class="btn-gold" type="submit" id="pairBtn">開始合盤</button><span class="status" id="pairSt" aria-live="polite">契合度與五大面向立即算出；AI 相處分析試用期間每天 <b class="q-left" data-k="pair">2</b> 份。</span></div>
+      </form>
+      <div id="pairOut" style="margin-top:16px"></div>
+      <div id="pairAI"></div>
+    </div>
+  </section>
+
+  <section id="guide" aria-labelledby="h-guide">
+    <p style="margin:0 0 12px"><a href="#daily" class="back-link">← 回到首頁</a></p>
+    <div class="hero" style="padding-top:8px"><p class="eyebrow">使用說明</p><h1 id="h-guide" style="font-size:clamp(28px,5vw,40px)">怎麼使用撥雲見日</h1><p class="sub">三分鐘看懂每個功能、名詞與使用規則</p></div>
+
+    <div class="card g-sec"><h2>三個步驟開始</h2>
+      <ol class="g-steps">
+        <li><b>填生日與時辰</b><span>輸入國曆生日、出生時辰與出生地。時辰不確定可選「不確定」，系統會略過時柱與上升星座。</span></li>
+        <li><b>補充姓名、手相、問題（選填）</b><span>填姓名可算姓名學；上傳一張掌心照片可看手相；寫下最想問的事，AI 會針對它回答。</span></li>
+        <li><b>按「開始解析」</b><span>八字、星盤、姓名學立即算出；AI 綜合解讀約 20–40 秒完成。</span></li>
+      </ol></div>
+
+    <div class="card g-sec"><h2>功能說明</h2>
+      <div class="g-grid">
+        <div class="w-box"><h4>今日運勢</h4><p>每日塔羅（78 張、正逆位，每天抽一次）與依姓名或八字日主算出的今日幸運色、方位與注意事項。</p></div>
+        <div class="w-box"><h4>八字命盤</h4><p>以國曆換算年、月、日、時四柱，列出十神、藏干、納音、五行多寡、大運與流年，可下載成圖片。</p></div>
+        <div class="w-box"><h4>流年批示</h4><p>選擇年份，依流年干支與你的日主推算十神、太歲關係、與命局的沖合，並列出宜忌與逐月提醒。</p></div>
+        <div class="w-box"><h4>西洋星盤</h4><p>依出生時間與地點算出太陽、月亮、上升與各行星的星座、宮位、相位，以及木星、土星行運。</p></div>
+        <div class="w-box"><h4>姓名學</h4><p>依康熙字典筆畫算天、人、地、外、總五格，對照 81 數理與三才五行，並看名字和八字的搭配。</p></div>
+        <div class="w-box"><h4>手相（AI）</h4><p>上傳一張掌心照片，AI 判讀生命線、智慧線、感情線、事業線。照片分析完立即清除。</p></div>
+        <div class="w-box"><h4>AI 綜合解讀</h4><p>把八字、星盤、姓名與手相放在一起，寫出今年總論、事業、財運、感情、健康作息與問事回答。</p></div>
+        <div class="w-box"><h4>深度報告 <span class="price">NT$99</span></h4><p>三系統交叉解讀五大主題，加上未來 12 個月逐月建議與年度行動清單，可下載 PDF。</p></div>
+        <div class="w-box"><h4>雙人合盤 <span class="price">NT$199</span></h4><p>比對兩人的八字與星座，算出契合度，解析吸引力、生活相處、家庭、能量互補與角色定位，並給相處建議。</p></div>
+      </div></div>
+
+    <div class="card g-sec"><h2>名詞小辭典</h2>
+      <dl class="g-dl">
+        <dt>日主</dt><dd>出生那天的天干，代表「你自己」，所有分析都以它為中心。</dd>
+        <dt>五行</dt><dd>木、火、土、金、水。彼此相生（木生火、火生土…）也相剋（木剋土、土剋水…）。</dd>
+        <dt>十神</dt><dd>其他干支和日主的關係，如正財、七殺、食神，用來看財、官、才華、貴人等面向。</dd>
+        <dt>大運／流年</dt><dd>大運每十年一換，是人生的大季節；流年是每一年的氣候。</dd>
+        <dt>太歲</dt><dd>流年地支與你生肖的關係。值、沖、刑、害、破太歲代表該年變動較多，需多留意。</dd>
+        <dt>上升星座</dt><dd>出生當下東方地平線的星座，代表給人的第一印象，需要準確的出生時間。</dd>
+        <dt>相位</dt><dd>兩顆行星之間的角度。三分、六分較順，四分、對分代表張力與課題。</dd>
+        <dt>五格／三才</dt><dd>姓名學把姓名筆畫組成五個數，人格是主運；三才看天、人、地三格的五行是否相生。</dd>
+        <dt>合盤契合度</dt><dd>依兩人日主、配偶宮、生肖、五行互補與星座元素加總的參考分數，不是緣分的判決。</dd>
+      </dl></div>
+
+    <div class="card g-sec"><h2>使用規則</h2>
+      <ol class="g-rules">
+        <li><b>免費額度</b>：八字、流年、星盤、姓名學、塔羅、幸運色不限次數。AI 綜合解讀每台裝置每天 2 次；試用期間深度報告與雙人合盤每天各 2 份。台灣時間 00:00 重置，AI 沒有成功產生結果時不扣次數。</li>
+        <li><b>付費方案</b>：深度報告 NT$99／份、雙人合盤 NT$199／份。目前為試用期，免費開放；正式收費上線前會公告付款方式、發票與退款規則。</li>
+        <li><b>他人資料</b>：雙人合盤需要輸入對方的生日。請先取得對方同意，不得用於騷擾、監控或任何侵害他人的用途。</li>
+        <li><b>照片</b>：只上傳你自己的手掌照片，避免拍到臉、證件或其他可識別個人的資訊。</li>
+        <li><b>年齡</b>：未滿 18 歲請在家長或監護人陪同下使用，付費功能需由成年人購買。</li>
+        <li><b>內容性質</b>：所有結果依傳統命理規則與 AI 生成，僅供娛樂與自我探索參考，不構成醫療、心理、法律、財務或投資建議。重大決定請諮詢合格專業人士。</li>
+        <li><b>禁止濫用</b>：不得以程式大量呼叫、轉售本站內容，或嘗試繞過使用額度。發現濫用時本站可暫停服務。</li>
+        <li><b>需要協助</b>：如果你正感到痛苦或有傷害自己的念頭，請撥衛福部安心專線 1925（24 小時、免付費）、生命線 1995 或張老師 1980。</li>
+      </ol></div>
+
+    <div class="card g-sec"><h2>隱私說明</h2>
+      <ul class="g-rules">
+        <li>生日、時辰、姓名都在你的瀏覽器中運算，不會儲存到本站伺服器。</li>
+        <li>按下 AI 功能時，命盤數據、姓名與照片會傳給 AI 產生解讀，本站不保存，也不用於訓練 AI。</li>
+        <li>每日額度只用一組隨機裝置代碼計數，不含任何個人資料。</li>
+      </ul></div>
+
+    <div class="card g-sec"><h2>常見問題</h2>
+      <details><summary>不知道出生時辰怎麼辦？</summary><p>選「不確定」。八字會以年、月、日三柱分析，星盤不計上升與宮位，準確度會降低但仍可參考。</p></details>
+      <details><summary>夏令時間出生要怎麼選？</summary><p>台灣 1945–1979 年間部分年份實施夏令時間，出生在這些期間請自行把時間減一小時再選時辰。</p></details>
+      <details><summary>為什麼姓名學和姓名幸運色的筆畫不一樣？</summary><p>姓名學依傳統採康熙字典筆畫（如「氵」算 4 畫），姓名幸運色採教育部標準字體筆畫。兩派算法不同，本站兩種都提供。</p></details>
+      <details><summary>為什麼同樣資料，AI 每次寫得不一樣？</summary><p>命盤數據是固定的，AI 只是換句話說與挑重點。核心判斷（日主、五行、流年十神）不會改變。</p></details>
+      <details><summary>合盤分數低代表不適合嗎？</summary><p>不是。分數反映兩人差異大小，差異大代表需要更多溝通與磨合，很多關係正是因互補而長久。</p></details>
+    </div>
   </section>
 
   <footer>
@@ -673,7 +772,7 @@ updateChip();runLocal();
 // ===== 深度報告（試用中）=====
 let lastAI=null,lastReport=null;
 // ===== 免費額度：每台裝置每天 2 次（AI 解讀、深度報告各自計）=====
-const QUOTA={read:2,deep:2},qMem={};
+const QUOTA={read:2,deep:2,pair:2},qMem={};
 function qKey(k){return `byjr_q_${k}_${TPE_DATE()}`;}
 function qUsed(k){const v=store.get(qKey(k));return v==null?(qMem[qKey(k)]||0):Number(v)||0;}
 function qLeft(k){return Math.max(0,QUOTA[k]-qUsed(k));}
@@ -943,6 +1042,99 @@ function renderLucky(){
   <p class="hint">依傳統五行生剋推得，僅供參考。姓名只在你的瀏覽器中計算，不會送出或保存。</p>`;
 }
 $('luckyForm').addEventListener('submit',e=>{e.preventDefault();renderLucky();});
+// ===== 雙人合盤（八字＋星座）=====
+const SANHE=["申子辰","亥卯未","寅午戌","巳酉丑"];
+const sameSanhe=(a,b)=>a!==b&&SANHE.some(g=>g.includes(a)&&g.includes(b));
+const SS_ROLE={"比肩":"像朋友、戰友，平起平坐","劫財":"像朋友也像競爭者，互不相讓","食神":"你願意寵對方、讓對方開心","傷官":"你想改變對方，說話容易直接","偏財":"你欣賞對方，相處輕鬆有趣","正財":"你珍惜對方，想穩定經營","七殺":"對方帶給你刺激與壓力，也讓你成長","正官":"對方帶給你安全感，也帶來規矩","偏印":"對方懂你的內在，但有時有距離","正印":"對方照顧、包容你，像靠山"};
+const SIGN_EL=i=>["火","土","風","水"][i%4];
+function signElRel(a,b){if(a===b)return["同元素","價值觀相近，容易有共鳴",6];const good={"火":"風","風":"火","土":"水","水":"土"};if(good[a]===b)return["互補元素","一個點火一個助燃，彼此支持",5];return["張力元素","步調和需求不同，需要多溝通",-4];}
+const PAIR_HOURS=document.querySelector('#hour').innerHTML;
+$('pHour').innerHTML=PAIR_HOURS;$('pHour').value="-1";
+function calcPair(A,B,fa,fb){
+  const ga=A.detail[1].gan,gb=B.detail[1].gan,za=A.detail[1].zhi,zb=B.detail[1].zhi,ya=A.detail[3].zhi,yb=B.detail[3].zhi;
+  const wa=GAN_WX[ga],wb=GAN_WX[gb];let score=62;const rows=[];
+  // 1 吸引力：日干
+  let t1,s1;if(pairIn(GAN_HE,ga,gb)){s1=12;t1=`日主 ${ga} 與 ${gb} 天干五合，彼此有天生的吸引力，容易一見如故。`;}
+  else{const r=wxRel(wa,wb);s1={"比和":4,"相生":8,"逆生":8,"相剋":-5,"被剋":-5}[r];t1={"比和":`兩人日主同屬${wa}，想法相近、像朋友，但都有主見。`,"相生":`你的日主${wa}生對方的${wb}，你是付出、支持的一方。`,"逆生":`對方的日主${wb}生你的${wa}，對方是照顧、支持你的一方。`,"相剋":`你的日主${wa}剋對方的${wb}，你容易主導，對方可能感到壓力。`,"被剋":`對方的日主${wb}剋你的${wa}，對方較強勢，你需要表達自己的界線。`}[r];if(pairIn(GAN_CHONG,ga,gb)){s1-=3;t1+="兩人天干相沖，價值觀衝突時要先冷靜。";}}
+  score+=s1;rows.push({k:"吸引力",sub:"日主",s:s1,t:t1});
+  // 2 生活相處：日支（配偶宮）
+  let s2=0;const r2=zhiRel(za,zb).map(x=>x[0]);let t2;
+  if(r2.includes("合")){s2=10;t2=`日支 ${za}、${zb} 六合，配偶宮相合，日常生活默契好。`;}
+  else if(sameSanhe(za,zb)){s2=8;t2=`日支 ${za}、${zb} 三合，生活目標容易一致。`;}
+  else if(za===zb){s2=2;t2=`日支同為 ${za}，生活習慣相近${SELF_XING.includes(za)?"，但同類相刑，太像也容易互相挑剔":""}。`;if(SELF_XING.includes(za))s2=-3;}
+  else if(r2.includes("沖")){s2=-10;t2=`日支 ${za}、${zb} 相沖，作息、習慣或居住安排容易起摩擦，需要事先講好分工。`;}
+  else if(r2.includes("刑")||r2.includes("害")){s2=-6;t2=`日支 ${za}、${zb} 相${r2.filter(x=>x==="刑"||x==="害").join("、")}，小事容易累積成情緒，要及時說開。`;}
+  else if(r2.includes("破")){s2=-3;t2=`日支 ${za}、${zb} 相破，計畫常被打亂，保留彈性。`;}
+  else t2=`日支 ${za}、${zb} 無明顯沖合，相處平順，關係靠經營累積。`;
+  score+=s2;rows.push({k:"生活相處",sub:"配偶宮",s:s2,t:t2});
+  // 3 家庭：年支（生肖）
+  let s3=0,t3;const r3=zhiRel(ya,yb).map(x=>x[0]),sa=fa.shengxiao,sb=fb.shengxiao;
+  if(r3.includes("合")){s3=6;t3=`生肖${sa}與${sb}六合，雙方家庭容易接納彼此。`;}
+  else if(sameSanhe(ya,yb)){s3=6;t3=`生肖${sa}與${sb}三合，家庭觀念與社交圈相容。`;}
+  else if(r3.includes("沖")){s3=-6;t3=`生肖${sa}與${sb}相沖，原生家庭習慣差異大，面對長輩要多協調。`;}
+  else if(r3.includes("害")||r3.includes("刑")){s3=-4;t3=`生肖${sa}與${sb}相${r3.includes("害")?"害":"刑"}，容易因第三方意見產生誤會。`;}
+  else t3=`生肖${sa}與${sb}無明顯沖合，家庭面向中性。`;
+  score+=s3;rows.push({k:"家庭與長輩",sub:"年支生肖",s:s3,t:t3});
+  // 4 能量互補：五行
+  const weak=c=>{const m=Math.min(...Object.values(c));return Object.keys(c).filter(k=>c[k]===m);};
+  const wA=weak(A.count),wB=weak(B.count),giveB=wA.filter(w=>B.count[w]>=2),giveA=wB.filter(w=>A.count[w]>=2);
+  const s4=(giveB.length?5:0)+(giveA.length?5:0);score+=s4;
+  rows.push({k:"能量互補",sub:"五行",s:s4,t:`你較少的是${wA.join("、")}，${giveB.length?`對方的${giveB.join("、")}正好補上`:"對方也不多"}；對方較少的是${wB.join("、")}，${giveA.length?`你的${giveA.join("、")}正好補上`:"你也不多"}。${s4>=10?"兩人互相補位，是很好的組合。":s4?"單向互補，一方受益較多。":"互補性不高，需要從外部（興趣、環境）補足。"}`});
+  // 5 角色定位：十神
+  const ab=shiShen(ga,gb),ba=shiShen(gb,ga);
+  rows.push({k:"角色定位",sub:"十神",s:0,t:`對你來說，對方是「${ab}」：${SS_ROLE[ab]}。對對方來說，你是「${ba}」：${SS_ROLE[ba]}。`});
+  // 6 星座元素
+  const sgA=sunSignQuick(fa.m,fa.d),sgB=sunSignQuick(fb.m,fb.d),[rn,rt,s6]=signElRel(SIGN_EL(sgA),SIGN_EL(sgB));score+=s6;
+  rows.push({k:"星座元素",sub:`${SIGNS[sgA]}×${SIGNS[sgB]}`,s:s6,t:`${SIGNS[sgA]}座屬${SIGN_EL(sgA)}象、${SIGNS[sgB]}座屬${SIGN_EL(sgB)}象，${rn}：${rt}。`});
+  score=Math.max(40,Math.min(98,Math.round(score)));
+  const level=score>=85?"高度契合":score>=75?"契合":score>=65?"有基礎，需要磨合":"差異大，需用心經營";
+  return {score,level,rows,ab,ba,A,B,sgA,sgB};
+}
+function renderPair(p,name){
+  const cls=s=>s>0?"he":s<0?"chong":"xing";
+  $('pairOut').innerHTML=`<div class="pair-score"><div class="ring" style="--p:${p.score}"><b>${p.score}</b><small>契合度</small></div><div><div class="t-title">${esc(p.level)}</div><p class="hint" style="margin:4px 0 0">你：${esc(p.A.dayMaster)}日主・${SIGNS[p.sgA]}座　｜　${esc(name)}：${esc(p.B.dayMaster)}日主・${SIGNS[p.sgB]}座</p></div></div>
+  <ul class="ps-list" style="margin-top:14px">${p.rows.map(r=>`<li><b>${r.k}<br><small style="color:var(--muted)">${esc(r.sub)}</small></b><span>${r.s?`<span class="rel ${cls(r.s)}">${r.s>0?"加分":"留意"}</span>`:""}${esc(r.t)}</span></li>`).join("")}</ul>
+  <p class="hint">分數依日主、配偶宮、生肖、五行互補與星座元素加總，僅反映兩人差異大小，不代表緣分的判決。</p>`;
+}
+function buildPairPrompt(p,fa,fb,name,rel){
+  const pil=b=>b.pillars.map(x=>x[0]+x[1]).join("、");
+  return `你是「撥雲見日」命理網站的合盤解讀者。用台灣繁體中文、白話、溫和直接。規則：
+1. 每段都點名具體依據（日主、日支、生肖、五行、十神、星座），禁止空泛句。
+2. 不保證、不恐嚇，不用「一定」「注定」「凶」「剋夫」「剋妻」等字。不說「不適合就分手」，而是說明差異與經營方法。
+3. 關係是「${rel}」，建議要符合這種關係。
+4. 只輸出 JSON。
+
+【你】四柱 ${pil(p.A)}；日主 ${p.A.dayMaster}；五行 ${Object.entries(p.A.count).map(([k,v])=>k+v).join(" ")}；${fa.gender?"男":"女"}；${SIGNS[p.sgA]}座。
+【${name}】四柱 ${pil(p.B)}${p.B.hourKnown?"":"（時辰不詳）"}；日主 ${p.B.dayMaster}；五行 ${Object.entries(p.B.count).map(([k,v])=>k+v).join(" ")}；${fb.gender?"男":"女"}；${SIGNS[p.sgB]}座。
+【規則分析】契合度 ${p.score}（${p.level}）；${p.rows.map(r=>r.k+"："+r.t).join(" ")}
+
+JSON 格式：
+{"summary":"兩人關係總論與適合度，120–180 字","mode":"相處模式：誰主導、誰照顧、日常互動的樣子，100–150 字","strength":"這段關係的優勢，80–120 字","friction":"最容易起衝突的地雷與原因，80–120 字","communication":"給兩人的溝通建議，80–120 字","actions":["具體相處建議1","建議2","建議3"]}`;
+}
+function renderPairAI(r){
+  const item=(t,x)=>x?`<div class="ai-item"><h3>${t}</h3><p>${esc(x)}</p></div>`:"";
+  $('pairAI').innerHTML=`<h3 class="w-h">AI 相處分析 <span class="tag ai" style="font-size:11px">AI 生成．僅供參考</span></h3><div class="ai-block">${item("關係總論",r.summary)}${item("相處模式",r.mode)}${item("關係優勢",r.strength)}${item("衝突地雷",r.friction)}${item("溝通建議",r.communication)}</div>${Array.isArray(r.actions)&&r.actions.length?`<h3 style="font-size:15px;color:var(--gold);font-family:var(--body);margin-top:12px">相處建議</h3><ol style="margin:4px 0 0;padding-left:20px">${r.actions.slice(0,3).map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}`;
+}
+$('pairForm').addEventListener('submit',async e=>{
+  e.preventDefault();const st=$('pairSt');
+  if(!$('birth').value){st.textContent='請先在上方填好你的生日。';$('birth').focus();return}
+  if(!$('pBirth').value){st.textContent='請填寫對方的生日。';$('pBirth').focus();return}
+  const me=runLocal();if(!me)return;$('ex1').hidden=true;
+  const [y,m,d]=$('pBirth').value.split('-').map(Number),fb={y,m,d,hour:Number($('pHour').value),gender:Number($('pGender').value)};
+  const B=calcBazi(fb),fbx={...fb,shengxiao:B.shengxiao},fa={...me.f,shengxiao:me.b.shengxiao};
+  const name=$('pName').value.trim()||"對方",rel=$('pRel').value;
+  const p=calcPair(me.b,B,fa,fbx);renderPair(p,name);$('pairAI').innerHTML="";
+  const inArtifact=!!(window.claude&&window.claude.use);const sample=inArtifact?await claude.use("sample"):SITE_AI;
+  if(!sample){st.textContent='契合度已算出。這個檢視環境無法使用 AI 相處分析。';return}
+  if(qLeft('pair')<=0){st.textContent='契合度已算出。今天的 2 份 AI 相處分析已用完，明天 00:00 重置。';return}
+  $('pairBtn').disabled=true;st.innerHTML='<span class="spin">✶</span> 契合度已算出，AI 相處分析撰寫中，約 20–40 秒…';
+  try{const r=await sample.json(tw(buildPairPrompt(p,fa,fb,name,rel)),inArtifact?{modelTier:"default"}:{modelTier:"default",kind:"pair"});renderPairAI(r||{});qUse('pair');st.textContent='完成。結果僅供參考。';}
+  catch(err){const map={daily_limit:"今天的 2 份 AI 相處分析已用完，明天 00:00 重置。",not_granted:"你未允許本頁使用 Claude，AI 分析已略過。",rate_limited:"使用次數已達上限，請稍後再試。",invalid_json:"AI 回覆格式有誤，請再按一次。",network:"網路連線失敗，請稍後再試。"};st.textContent=map[err&&err.code]||("AI 分析暫時失敗，請稍後再試。（錯誤代碼："+((err&&err.code)||"unknown")+"）");}
+  finally{$('pairBtn').disabled=false;}
+});
+
+function route(){const g=location.hash==="#guide";document.body.classList.toggle('guide-mode',g);if(g)window.scrollTo(0,0);}
+window.addEventListener('hashchange',route);route();
 qShow();
 (function(){const di=dayInfo();$('dailyDate').textContent=di.ds.replace(/-/g,'/')+(di.gz?`・${di.gz}日`:"");todayCard=drawToday();renderTarot(store.get('byjr_tarot')===TPE_DATE());})();
 

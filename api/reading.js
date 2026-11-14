@@ -11,8 +11,8 @@ const hits = new Map(); // 簡易限流：每個 IP 每 10 分鐘 5 次（單一
 // ===== 每日免費額度（持久儲存：Upstash Redis REST）=====
 // Vercel → Storage → 新增 Upstash Redis（Marketplace），會自動注入 KV_REST_API_URL / KV_REST_API_TOKEN。
 // 未設定時退回記憶體計數（函式重啟會歸零），並在健康檢查顯示 quotaStore: "memory"。
-const DAILY = { read: 2, deep: 2 };      // 每裝置每天
-const DAILY_IP = { read: 6, deep: 4 };   // 每 IP 每天（同一網路多人共用時的寬鬆上限）
+const DAILY = { read: 2, deep: 2, pair: 2 };      // 每裝置每天
+const DAILY_IP = { read: 6, deep: 4, pair: 4 };   // 每 IP 每天（同一網路多人共用時的寬鬆上限）
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 const memQuota = new Map();
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
   }
   content.push({ type: "text", text: prompt });
 
-  const kind = req.body.kind === "deep" ? "deep" : "read";
+  const kind = ["deep", "pair"].includes(req.body.kind) ? req.body.kind : "read";
   const device = /^[a-z0-9]{8,64}$/i.test(String(req.headers["x-device-id"] || "")) ? String(req.headers["x-device-id"]) : "";
   let release;
   try { release = await takeQuota(kind, device, ip); }
