@@ -123,6 +123,7 @@ body.guide-mode .wrap>*:not(header):not(#guide):not(footer){display:none!importa
 .g-steps,.g-rules{margin:0;padding-left:22px;display:grid;gap:10px}.g-steps li b{display:block;color:var(--cloud)}.g-steps li span{color:var(--muted);font-size:14px}
 .g-rules li{font-size:14.5px}.g-rules b{color:var(--gold);font-weight:600}
 .g-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.g-grid h4{margin:0 0 4px;font-size:15px;color:var(--gold)}.g-grid p{margin:0;font-size:14px;color:var(--muted)}
+.lic{white-space:pre-wrap;font-size:12px;color:var(--muted);background:var(--panel-2);border-radius:8px;padding:12px;margin:8px 0 0;font-family:ui-monospace,monospace}
 .price{font-size:12px;border:1px solid var(--gold);border-radius:6px;padding:0 6px;margin-left:4px;color:var(--gold)}
 .g-dl{display:grid;grid-template-columns:110px 1fr;gap:8px 14px;margin:0}.g-dl dt{color:var(--gold)}.g-dl dd{margin:0;font-size:14px}
 @media (max-width:620px){.g-dl{grid-template-columns:1fr;gap:2px}.g-dl dd{margin-bottom:8px}}
@@ -360,6 +361,38 @@ details{border-top:1px solid var(--line);padding:10px 0}details summary{cursor:p
       <details><summary>為什麼姓名學和姓名幸運色的筆畫不一樣？</summary><p>姓名學依傳統採康熙字典筆畫（如「氵」算 4 畫），姓名幸運色採教育部標準字體筆畫。兩派算法不同，本站兩種都提供。</p></details>
       <details><summary>為什麼同樣資料，AI 每次寫得不一樣？</summary><p>命盤數據是固定的，AI 只是換句話說與挑重點。核心判斷（日主、五行、流年十神）不會改變。</p></details>
       <details><summary>合盤分數低代表不適合嗎？</summary><p>不是。分數反映兩人差異大小，差異大代表需要更多溝通與磨合，很多關係正是因互補而長久。</p></details>
+    </div>
+    <div class="card g-sec" id="licenses"><h2>開源授權聲明</h2>
+      <p class="hint" style="margin:0 0 10px">本站使用下列開源軟體與資料，依其授權條款標示如下。</p>
+      <ul class="g-rules">
+        <li><b>lunar-javascript 1.7.7</b>（八字、農曆運算）：Copyright (c) 2018 6tail，MIT License。<a href="https://github.com/6tail/lunar-javascript" target="_blank" rel="noopener">原始碼</a></li>
+        <li><b>astronomy-engine 2.1.19</b>（行星位置、星盤運算）：Copyright (c) 2019-2023 Don Cross，MIT License。<a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">原始碼</a></li>
+        <li><b>shunshi-kangxi-core 0.1.1</b>（姓名學康熙筆畫資料）：Copyright (c) 2026 Shunshi.AI (https://shunshi.ai)，MIT License。<a href="https://www.npmjs.com/package/shunshi-kangxi-core" target="_blank" rel="noopener">套件頁</a></li>
+        <li><b>CNS 11643 中文標準交換碼全字庫</b>（姓名幸運色筆畫資料）：國家發展委員會，依政府資料開放授權條款第 1 版提供。</li>
+      </ul>
+      <details><summary>MIT License 授權全文</summary><pre class="lic">MIT License
+
+Copyright (c) 2018 6tail
+Copyright (c) 2019-2023 Don Cross
+Copyright (c) 2026 Shunshi.AI (https://shunshi.ai)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the &quot;Software&quot;), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</pre></details>
     </div>
   </section>
 
