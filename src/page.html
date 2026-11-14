@@ -116,8 +116,9 @@ footer strong{color:var(--cloud)}
 .dist span{border:1px solid var(--line);border-radius:8px;padding:2px 10px;font-variant-numeric:tabular-nums}
 .dist span.hi{border-color:var(--gold);color:var(--gold)}
 .w-h{font-size:17px;margin:22px 0 4px}
-#guide{display:none}body.guide-mode #guide{display:block}
-body.guide-mode .wrap>*:not(header):not(#guide):not(footer){display:none!important}
+#guide,#privacy{display:none}body.guide-mode #guide,body.privacy-mode #privacy{display:block}
+body.guide-mode .wrap>*:not(header):not(#guide):not(footer),body.privacy-mode .wrap>*:not(header):not(#privacy):not(footer){display:none!important}
+.pp h3{font-size:16px;color:var(--gold);margin:18px 0 6px}.pp p,.pp li{font-size:14.5px}.pp table{font-size:13.5px}.pp td,.pp th{vertical-align:top}
 .back-link{color:var(--gold);text-decoration:none;font-size:14px}
 .g-sec{margin-top:16px}.g-sec h2{font-size:21px;margin-bottom:10px}
 .g-steps,.g-rules{margin:0;padding-left:22px;display:grid;gap:10px}.g-steps li b{display:block;color:var(--cloud)}.g-steps li span{color:var(--muted);font-size:14px}
@@ -228,6 +229,7 @@ details{border-top:1px solid var(--line);padding:10px 0}details summary{cursor:p
       <button class="btn-gold" type="submit" id="go">開始解析</button>
       <span class="status" id="status" aria-live="polite">目前顯示範例資料的運算結果。按「開始解析」取得 AI 解讀。</span>
     </div>
+    <div class="hint" style="margin-top:-6px">按下「開始解析」即表示你已閱讀並同意<a href="#privacy" class="back-link">隱私權政策</a>與<a href="#guide" class="back-link">使用規則</a>。</div>
   </form>
 
   <section class="result" id="bazi" aria-labelledby="h-bazi">
@@ -350,10 +352,10 @@ details{border-top:1px solid var(--line);padding:10px 0}details summary{cursor:p
 
     <div class="card g-sec"><h2>隱私說明</h2>
       <ul class="g-rules">
-        <li>生日、時辰、姓名都在你的瀏覽器中運算，不會儲存到本站伺服器。</li>
-        <li>按下 AI 功能時，命盤數據、姓名與照片會傳給 AI 產生解讀，本站不保存，也不用於訓練 AI。</li>
-        <li>每日額度只用一組隨機裝置代碼計數，不含任何個人資料。</li>
-      </ul></div>
+        <li>八字、星盤、姓名學都在你的瀏覽器中運算，生日與姓名不會儲存到本站伺服器。</li>
+        <li>使用 AI 功能時，命盤數據、姓名、照片與問題會傳給 AI 服務產生解讀，本站不保存。</li>
+        <li>每日額度以隨機裝置代碼與 IP 位址計數，約 36 小時後自動刪除。</li>
+      </ul><p style="margin:10px 0 0"><a href="#privacy" class="back-link">完整隱私權政策 →</a></p></div>
 
     <div class="card g-sec"><h2>常見問題</h2>
       <details><summary>不知道出生時辰怎麼辦？</summary><p>選「不確定」。八字會以年、月、日三柱分析，星盤不計上升與宮位，準確度會降低但仍可參考。</p></details>
@@ -396,9 +398,61 @@ SOFTWARE.</pre></details>
     </div>
   </section>
 
+  <section id="privacy" class="pp" aria-labelledby="h-privacy">
+    <p style="margin:0 0 12px"><a href="#daily" class="back-link">← 回到首頁</a></p>
+    <div class="hero" style="padding-top:8px"><p class="eyebrow">隱私權政策</p><h1 id="h-privacy" style="font-size:clamp(28px,5vw,40px)">隱私權政策</h1><p class="sub">生效日期：2026 年 11 月 14 日</p></div>
+    <div class="card g-sec">
+      <p>撥雲見日（以下稱「本站」）重視你的隱私。本政策依《個人資料保護法》第 8 條，說明本站蒐集哪些資料、為何蒐集、如何使用與保存，以及你的權利。</p>
+
+      <h3>一、蒐集者與聯絡方式</h3>
+      <p>蒐集者：撥雲見日網站經營者。聯絡信箱：〔待填〕。</p>
+
+      <h3>二、蒐集目的</h3>
+      <p>提供命理運算、AI 解讀、深度報告、雙人合盤與每日運勢等服務，以及防止濫用（法定特定目的：〇九〇 消費者、客戶管理與服務；一三五 資（通）訊服務）。</p>
+
+      <h3>三、蒐集的資料、用途與保存期間</h3>
+      <div class="scroll"><table><thead><tr><th>資料</th><th>用途</th><th>處理方式與保存期間</th></tr></thead><tbody>
+        <tr><td>出生日期、時辰、性別、出生地</td><td>計算八字與星盤</td><td>在你的瀏覽器中運算，不送到本站伺服器。使用 AI 功能時，只送出算好的四柱、行星位置等命盤數據，不送出生日原值。</td></tr>
+        <tr><td>姓名</td><td>姓名學、姓名幸運色、AI 解讀</td><td>在瀏覽器中運算；使用 AI 功能時會送至 AI 服務。本站不保存。</td></tr>
+        <tr><td>手相照片（選填）</td><td>AI 手相判讀</td><td>僅在你同意並按下「開始解析」時送出，分析完成即從頁面清除。本站不保存。</td></tr>
+        <tr><td>提問內容（選填）</td><td>AI 問事回答</td><td>送至 AI 服務產生回答，本站不保存。</td></tr>
+        <tr><td>合盤對象的生日、性別、稱呼</td><td>雙人合盤</td><td>同上。輸入前請先取得對方同意。</td></tr>
+        <tr><td>IP 位址、隨機裝置代碼</td><td>計算每日免費額度、防止濫用</td><td>以「日期＋代碼」形式記錄使用次數，約 36 小時後自動刪除。</td></tr>
+        <tr><td>連線紀錄</td><td>網站運作與資安</td><td>由主機服務商依其政策保存。</td></tr>
+        <tr><td>瀏覽器本機儲存</td><td>記住當日額度、塔羅抽牌結果、裝置代碼</td><td>只存在你的裝置上，可隨時清除瀏覽器資料刪除。</td></tr>
+      </tbody></table></div>
+
+      <h3>四、利用對象與地區</h3>
+      <ul class="g-rules">
+        <li><b>Anthropic</b>（AI 解讀服務，美國）：接收命盤數據、姓名、照片與提問以產生解讀。依其商用服務條款，API 資料預設不用於訓練模型。</li>
+        <li><b>Vercel</b>（網站主機，美國）：提供網站與後端運作。</li>
+        <li><b>Upstash</b>（額度計數資料庫）：保存 IP 與裝置代碼的使用次數。</li>
+      </ul>
+      <p>以上屬於國際傳輸。本站不出售、不出租你的資料，也不提供給上述以外的第三方，法律另有規定者除外。</p>
+
+      <h3>五、你的權利</h3>
+      <p>依《個人資料保護法》第 3 條，你可以請求查詢、閱覽、製給複本、補充或更正、停止蒐集處理利用，以及刪除你的個人資料。由於本站不保存你的生日、姓名、照片與提問，多數資料在每次使用結束即不存在；如需處理額度紀錄或其他請求，請來信聯絡信箱。</p>
+
+      <h3>六、不提供資料的影響</h3>
+      <p>姓名、照片、提問與合盤對象資料均為選填，不提供只會少掉對應的分析。不提供出生日期則無法計算命盤。</p>
+
+      <h3>七、Cookie 與追蹤</h3>
+      <p>本站不使用廣告追蹤或第三方分析 Cookie，只使用瀏覽器本機儲存記錄上述功能所需的資訊。</p>
+
+      <h3>八、未成年人</h3>
+      <p>未滿 18 歲者請在法定代理人陪同與同意下使用本站。</p>
+
+      <h3>九、資料安全</h3>
+      <p>全站採 HTTPS 加密傳輸，AI 服務金鑰只存於伺服器環境變數，不會出現在網頁中。本站盡量不保存個人資料，以降低外洩風險。</p>
+
+      <h3>十、政策修訂</h3>
+      <p>本站推出會員或付費功能時，會先更新本政策並在網站公告。修訂後繼續使用，視為同意修訂內容。</p>
+    </div>
+  </section>
+
   <footer>
     <p><strong>免責聲明：</strong>本網站所提供之八字、手相、星座與星盤等內容，皆依傳統命理理論由系統與 AI 自動生成，僅供娛樂與自我探索參考，不具科學驗證基礎，亦不構成醫療、心理、法律、財務、投資或任何專業建議。本站不保證內容之準確性，使用者依內容所做之任何決定，應自行判斷並承擔結果。重大決策請諮詢合格專業人士。</p>
-    <p><strong>隱私：</strong>手相照片僅在你按下「開始解析」時送出分析，結果產生後即從頁面清除，本站不保存照片。生日等資料只在你的瀏覽器中運算。</p>
+    <p><strong>隱私：</strong>八字、星盤與姓名學在你的瀏覽器中運算。使用 AI 功能時，命盤數據、姓名、手相照片與提問會送至 AI 服務產生解讀，本站不保存；照片於分析後即從頁面清除。詳見<a href="#privacy">隱私權政策</a>。</p>
     <p><strong>需要協助：</strong>衛福部安心專線 1925、生命線 1995、張老師專線 1980（24 小時）。</p>
     <p><strong>資料來源：</strong>姓名幸運色筆畫取自 <a href="https://www.cns11643.gov.tw/" target="_blank" rel="noopener">CNS 11643 中文標準交換碼全字庫</a>（政府資料開放授權條款第 1 版）；姓名學五格採康熙字典筆畫，資料取自 shunshi-kangxi-core（MIT 授權）。塔羅牌面為本站自繪。</p>
     <p>© 2026 撥雲見日 · MVP 測試版</p>
@@ -1166,7 +1220,7 @@ $('pairForm').addEventListener('submit',async e=>{
   finally{$('pairBtn').disabled=false;}
 });
 
-function route(){const g=location.hash==="#guide";document.body.classList.toggle('guide-mode',g);if(g)window.scrollTo(0,0);}
+function route(){const h=location.hash,g=h==="#guide",pv=h==="#privacy";document.body.classList.toggle('guide-mode',g);document.body.classList.toggle('privacy-mode',pv);if(g||pv)window.scrollTo(0,0);}
 window.addEventListener('hashchange',route);route();
 qShow();
 (function(){const di=dayInfo();$('dailyDate').textContent=di.ds.replace(/-/g,'/')+(di.gz?`・${di.gz}日`:"");todayCard=drawToday();renderTarot(store.get('byjr_tarot')===TPE_DATE());})();
