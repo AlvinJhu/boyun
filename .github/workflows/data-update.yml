@@ -15,7 +15,7 @@ jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: PR 說明檔位置
         run: echo "NOTES_FILE=$RUNNER_TEMP/notes.md" >> "$GITHUB_ENV"
       - uses: actions/setup-node@v7
