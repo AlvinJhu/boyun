@@ -1,0 +1,52 @@
+name: 每週資料更新
+# 每週一 03:17（台灣時間）自動：
+#   1. 檢查天文（astronomy-engine）與農曆（lunar-javascript）套件有沒有新版
+#   2. 若有設定 ANTHROPIC_API_KEY，讓 Claude 草擬幾條知識庫的新詮釋
+#   3. 同步頁面、跑全部測試；全部通過且有變動才開 PR（不會直接改 main）
+on:
+  schedule:
+    - cron: "17 19 * * 0"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+concurrency: data-update
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PR 說明檔位置
+        run: echo "NOTES_FILE=$RUNNER_TEMP/notes.md" >> "$GITHUB_ENV"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: 檢查天文與農曆套件新版
+        run: node scripts/update-libs.mjs
+      - name: 套件有變動時更新鎖定檔
+        run: |
+          if ! git diff --quiet package.json; then npm install --no-audit --no-fund; fi
+      - name: 草擬知識庫新條目（沒設定 ANTHROPIC_API_KEY 就略過）
+        run: node scripts/kb-draft.mjs --max 10
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: 同步頁面
+        run: npm run sync
+      - name: 全部測試（不通過就不會開 PR）
+        run: npm test
+      - name: 有變動就開 PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then echo "本週沒有需要更新的內容。"; exit 0; fi
+          [ -f "$NOTES_FILE" ] || echo "自動資料更新。" > "$NOTES_FILE"
+          BR="data-update/$(date -u +%Y%m%d)-$GITHUB_RUN_NUMBER"
+          git config user.name "boyun-bot"
+          git config user.email "boyun-bot@users.noreply.github.com"
+          git checkout -b "$BR"
+          git add -A
+          git commit -m "每週資料更新"
+          git push -u origin "$BR"
+          gh pr create --base main --head "$BR" --title "每週資料更新 $(date -u +%Y-%m-%d)" --body-file "$NOTES_FILE"

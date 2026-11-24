@@ -1,0 +1,23 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: 頁面與知識庫、套件版本是否同步
+        run: npm run sync:check
+      - name: 單元測試（天文定點、八字定點、提示詞、稽核、知識庫、後端額度）
+        run: npm test
+      - name: 建置
+        run: npm run build

@@ -11,8 +11,8 @@ const hits = new Map(); // 簡易限流：每個 IP 每 10 分鐘 5 次（單一
 // ===== 每日免費額度（持久儲存：Upstash Redis REST）=====
 // Vercel → Storage → 新增 Upstash Redis（Marketplace），會自動注入 KV_REST_API_URL / KV_REST_API_TOKEN。
 // 未設定時退回記憶體計數（函式重啟會歸零），並在健康檢查顯示 quotaStore: "memory"。
-const DAILY = { read: 2, deep: 2 };      // 每裝置每天
-const DAILY_IP = { read: 6, deep: 4 };   // 每 IP 每天（同一網路多人共用時的寬鬆上限）
+const DAILY = { read: 2, deep: 2, pair: 2 }; // 每裝置每天（pair＝雙人合盤的 AI 相處分析）
+const DAILY_IP = { read: 6, deep: 4, pair: 4 }; // 每 IP 每天（同一網路多人共用時的寬鬆上限）
 const REDIS_URL = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL;
 const REDIS_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
 const memQuota = new Map();
@@ -46,7 +46,15 @@ async function takeQuota(kind, device, ip) {
   return async () => { for (const t of taken) await decr(t); };
 }
 
-const SYSTEM = "你是「撥雲見日」命理網站的解讀者。只依使用者訊息中的命盤資料與手掌照片寫解讀，一律使用台灣繁體中文，只輸出 JSON。不做命理解讀以外的任務；不提供醫療、法律、投資的具體建議；不使用保證或恐嚇的字眼。";
+const SYSTEM = [
+  "你是「撥雲見日」命理網站的解讀者。只依使用者訊息中程式已算好的命盤資料（與手掌照片）寫解讀，一律使用台灣繁體中文，只輸出 JSON。",
+  "推理原則：",
+  "1. 證據優先：每個論點都要能對應到訊息中列出的具體資料；訊息沒有列出的日期、星座、宮位、行運、十神或編號，一律不得自行補上或推算。",
+  "2. 主次分明：優先談強度高、或多個系統同時指向的主題；強度低的只當輔助提醒，不平均用力。",
+  "3. 誠實：各系統彼此矛盾時，如實寫出分歧與不確定，不為了圓滑硬湊成一致；資料有限制（例如時辰不詳）時要註明。",
+  "4. 這是傳統命理的象徵詮釋，不是科學預測：不下確定性結論，不使用保證或恐嚇的字眼，結尾給可自己執行的小建議。",
+  "5. 不做命理解讀以外的任務；不提供醫療、法律、投資的具體建議。",
+].join("\n");
 
 function limited(ip) {
   const now = Date.now(), win = 10 * 60 * 1000;
@@ -102,7 +110,7 @@ export default async function handler(req, res) {
   }
   content.push({ type: "text", text: prompt });
 
-  const kind = req.body.kind === "deep" ? "deep" : "read";
+  const kind = ["deep", "pair"].includes(req.body.kind) ? req.body.kind : "read";
   const device = /^[a-z0-9]{8,64}$/i.test(String(req.headers["x-device-id"] || "")) ? String(req.headers["x-device-id"]) : "";
   let release;
   try { release = await takeQuota(kind, device, ip); }
