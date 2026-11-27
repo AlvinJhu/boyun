@@ -3,7 +3,9 @@
 import Anthropic from "@anthropic-ai/sdk";
 
 let _client = null;
-const getClient = () => (_client ||= new Anthropic()); // 讀取 ANTHROPIC_API_KEY
+// Vercel 函式上限 60 秒（vercel.json maxDuration）：SDK 逾時設 55 秒、不重試，
+// 寫太久時回傳 code: "timeout" 的 JSON，而不是被平台直接中斷。
+const getClient = () => (_client ||= new Anthropic({ timeout: 55_000, maxRetries: 0 })); // 讀取 ANTHROPIC_API_KEY
 const MAX_PROMPT_CHARS = 12000;
 const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 const hits = new Map(); // 簡易限流：每個 IP 每 10 分鐘 5 次（單一執行個體內有效）
@@ -132,12 +134,14 @@ export default async function handler(req, res) {
       return res.status(502).json({ code: "invalid_json" });
     }
   } catch (error) {
+    if (error instanceof Anthropic.APIConnectionTimeoutError) return res.status(504).json({ code: "timeout" });
     if (error instanceof Anthropic.RateLimitError) return res.status(429).json({ code: "rate_limited" });
     if (error instanceof Anthropic.AuthenticationError) return res.status(500).json({ code: "server_misconfigured" });
     if (error instanceof Anthropic.BadRequestError) return res.status(400).json({ code: "bad_request" });
     if (error instanceof Anthropic.APIError) return res.status(502).json({ code: "upstream_error", status: error.status });
     console.error(error);
-    return res.status(500).json({ code: "server_error" });
+    const detail = `${(error && error.name) || "Error"}: ${String((error && error.message) || error)}`.slice(0, 160);
+    return res.status(500).json({ code: "server_error", detail });
   } finally {
     if (!ok && release) await release().catch(() => {});
   }
