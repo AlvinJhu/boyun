@@ -10,7 +10,7 @@ export const PAGE_URL = new URL("../src/page.html", import.meta.url);
 export const pageHtml = () => readFileSync(PAGE_URL, "utf8");
 
 const NAMES = ["calcBazi", "calcAstro", "calcWestern", "calcTransit", "calcPishi", "calcName", "trSummary", "trFmt", "trLons",
-  "buildPrompt", "buildReportPrompt", "buildPairPrompt", "crossClues", "crossItems", "ccVerdict", "auditAI", "kbText",
+  "buildPrompt", "buildReportPrompt", "buildPairPrompt", "calcPair", "crossClues", "crossItems", "ccVerdict", "auditAI", "kbText",
   "sancaiTx", "KB", "SIGNS", "signOf", "wxRel", "reportMonths", "KX", "tw", "readForm", "runLocal", "TOPICS", "QUOTA"];
 
 function fakeDom(values) {

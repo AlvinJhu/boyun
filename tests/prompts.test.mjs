@@ -64,3 +64,25 @@ test("雙人合盤提示詞：含合盤守則，不含行運編號規則", () =>
   assert.equal(typeof T.auditAI({ x: "T-SAT-CON-SUN" }, "").x, "string");
   assert.equal(T.auditAI({ x: "T-SAT-CON-SUN" }, "").x, ""); // 合盤提示詞沒有行運，任何編號都是編造
 });
+
+test("雙人合盤選「子女」：改為親子用語與親子守則，伴侶用語不出現", () => {
+  const fa = { y: 1985, m: 5, d: 10, hour: 9, gender: 1 }, fb = { y: 2015, m: 8, d: 3, hour: -1, gender: 0 };
+  const A = T.calcBazi(fa), B = T.calcBazi(fb);
+  const xa = { ...fa, shengxiao: A.shengxiao }, xb = { ...fb, shengxiao: B.shengxiao };
+  const kid = T.calcPair(A, B, xa, xb, "子女"), mate = T.calcPair(A, B, xa, xb, "夫妻");
+  assert.equal(kid.kid, true);
+  assert.equal(mate.kid, false);
+  assert.equal(kid.score, mate.score); // 分數規則相同，只改用語
+  const kidRows = kid.rows.map((r) => r.k + r.sub + r.t).join("");
+  assert.doesNotMatch(kidRows, /配偶宮|吸引力|一見如故|雙方家庭/);
+  assert.match(kidRows, /親近感/);
+  const p = T.buildPairPrompt(kid, xa, xb, "小寶", "子女");
+  assert.match(p, /親子合盤額外規則/);
+  assert.match(p, /父母（【你】）與子女（【小寶】）/);
+  assert.match(p, /【小寶（子女）】/);
+  assert.match(p, /給父母的溝通與教養建議/);
+  assert.match(p, /推理流程（先在心中完成，再輸出 JSON）/);
+  const pm = T.buildPairPrompt(mate, xa, xb, "小美", "夫妻");
+  assert.doesNotMatch(pm, /親子/);
+  assert.match(pm, /關係是「夫妻」/);
+});

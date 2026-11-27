@@ -285,14 +285,14 @@ details{border-top:1px solid var(--line);padding:10px 0}details summary{cursor:p
   <section class="result" id="pair" aria-labelledby="h-pair">
     <div class="card">
       <div class="sec-head"><h2 id="h-pair">雙人合盤</h2><span class="tag trial">NT$199・試用中</span></div>
-      <p class="hint" style="margin:4px 0 12px">比對你（上方表單）和對方的八字與星座，看兩人怎麼相處、適不適合。輸入對方資料前，請先取得對方同意。</p>
+      <p class="hint" style="margin:4px 0 12px">比對你（上方表單）和對方的八字與星座，看兩人怎麼相處、適不適合。關係選「子女」時改看親子互動與教養方式。輸入對方資料前，請先取得對方同意；子女未成年時由父母輸入。</p>
       <form id="pairForm" novalidate style="display:grid;gap:14px">
         <div class="grid">
           <div><label for="pName">對方稱呼（選填）</label><input id="pName" maxlength="10" placeholder="例如：小美"></div>
           <div><label for="pBirth">對方國曆生日</label><input type="date" id="pBirth" min="1900-01-01" max="2100-12-31" value="1992-03-06"></div>
           <div><label for="pHour">對方出生時辰</label><select id="pHour"></select></div>
           <div><label for="pGender">對方性別</label><select id="pGender"><option value="1" selected>男</option><option value="0">女</option></select></div>
-          <div><label for="pRel">關係</label><select id="pRel"><option>伴侶／交往中</option><option>曖昧／追求中</option><option>夫妻</option><option>朋友</option><option>工作夥伴</option></select></div>
+          <div><label for="pRel">關係</label><select id="pRel"><option>伴侶／交往中</option><option>曖昧／追求中</option><option>夫妻</option><option>朋友</option><option>工作夥伴</option><option value="子女">子女（我是父母）</option></select></div>
         </div>
         <div class="actions"><button class="btn-gold" type="submit" id="pairBtn">開始合盤</button><span class="status" id="pairSt" aria-live="polite">契合度與五大面向立即算出；AI 相處分析試用期間每天 <b class="q-left" data-k="pair">2</b> 份。</span></div>
       </form>
@@ -322,7 +322,7 @@ details{border-top:1px solid var(--line);padding:10px 0}details summary{cursor:p
         <div class="w-box"><h4>手相（AI）</h4><p>上傳一張掌心照片，AI 判讀生命線、智慧線、感情線、事業線。照片分析完立即清除。</p></div>
         <div class="w-box"><h4>AI 綜合解讀</h4><p>把八字、星盤、姓名與手相放在一起，寫出今年總論、事業、財運、感情、健康作息與問事回答。</p></div>
         <div class="w-box"><h4>深度報告 <span class="price">NT$99</span></h4><p>三系統交叉解讀五大主題，加上未來 12 個月逐月建議與年度行動清單，可下載 PDF。</p></div>
-        <div class="w-box"><h4>雙人合盤 <span class="price">NT$199</span></h4><p>比對兩人的八字與星座，算出契合度，解析吸引力、生活相處、家庭、能量互補與角色定位，並給相處建議。</p></div>
+        <div class="w-box"><h4>雙人合盤 <span class="price">NT$199</span></h4><p>比對兩人的八字與星座，算出契合度，解析吸引力、生活相處、家庭、能量互補與角色定位，並給相處建議。關係選「子女」時改為親子合盤，著重教養互動與溝通。</p></div>
       </div></div>
 
     <div class="card g-sec"><h2>名詞小辭典</h2>
@@ -1292,13 +1292,14 @@ const SIGN_EL=i=>["火","土","風","水"][i%4];
 function signElRel(a,b){if(a===b)return["同元素","價值觀相近，容易有共鳴",6];const good={"火":"風","風":"火","土":"水","水":"土"};if(good[a]===b)return["互補元素","一個點火一個助燃，彼此支持",5];return["張力元素","步調和需求不同，需要多溝通",-4];}
 const PAIR_HOURS=document.querySelector('#hour').innerHTML;
 $('pHour').innerHTML=PAIR_HOURS;$('pHour').value="-1";
-function calcPair(A,B,fa,fb){
+function calcPair(A,B,fa,fb,rel){
+  const kid=rel==="子女";
   const ga=A.detail[1].gan,gb=B.detail[1].gan,za=A.detail[1].zhi,zb=B.detail[1].zhi,ya=A.detail[3].zhi,yb=B.detail[3].zhi;
   const wa=GAN_WX[ga],wb=GAN_WX[gb];let score=62;const rows=[];
   // 1 吸引力：日干
-  let t1,s1;if(pairIn(GAN_HE,ga,gb)){s1=12;t1=`日主 ${ga} 與 ${gb} 天干五合，彼此有天生的吸引力，容易一見如故。`;}
+  let t1,s1;if(pairIn(GAN_HE,ga,gb)){s1=12;t1=kid?`日主 ${ga} 與 ${gb} 天干五合，親子之間天生親近，孩子容易黏你、願意聽你說。`:`日主 ${ga} 與 ${gb} 天干五合，彼此有天生的吸引力，容易一見如故。`;}
   else{const r=wxRel(wa,wb);s1={"比和":4,"相生":8,"逆生":8,"相剋":-5,"被剋":-5}[r];t1={"比和":`兩人日主同屬${wa}，想法相近、像朋友，但都有主見。`,"相生":`你的日主${wa}生對方的${wb}，你是付出、支持的一方。`,"逆生":`對方的日主${wb}生你的${wa}，對方是照顧、支持你的一方。`,"相剋":`你的日主${wa}剋對方的${wb}，你容易主導，對方可能感到壓力。`,"被剋":`對方的日主${wb}剋你的${wa}，對方較強勢，你需要表達自己的界線。`}[r];if(pairIn(GAN_CHONG,ga,gb)){s1-=3;t1+="兩人天干相沖，價值觀衝突時要先冷靜。";}}
-  score+=s1;rows.push({k:"吸引力",sub:"日主",s:s1,t:t1});
+  score+=s1;rows.push({k:kid?"親近感":"吸引力",sub:"日主",s:s1,t:t1});
   // 2 生活相處：日支（配偶宮）
   let s2=0;const r2=zhiRel(za,zb).map(x=>x[0]);let t2;
   if(r2.includes("合")){s2=10;t2=`日支 ${za}、${zb} 六合，配偶宮相合，日常生活默契好。`;}
@@ -1308,7 +1309,8 @@ function calcPair(A,B,fa,fb){
   else if(r2.includes("刑")||r2.includes("害")){s2=-6;t2=`日支 ${za}、${zb} 相${r2.filter(x=>x==="刑"||x==="害").join("、")}，小事容易累積成情緒，要及時說開。`;}
   else if(r2.includes("破")){s2=-3;t2=`日支 ${za}、${zb} 相破，計畫常被打亂，保留彈性。`;}
   else t2=`日支 ${za}、${zb} 無明顯沖合，相處平順，關係靠經營累積。`;
-  score+=s2;rows.push({k:"生活相處",sub:"配偶宮",s:s2,t:t2});
+  if(kid)t2=t2.replace("，配偶宮相合，日常生活默契好","，日常作息與生活習慣容易合拍").replace("生活目標容易一致","生活步調容易一致").replace("作息、習慣或居住安排容易起摩擦，需要事先講好分工","作息與生活習慣容易起摩擦，規矩要事先講清楚、少臨時要求");
+  score+=s2;rows.push({k:"生活相處",sub:kid?"日支":"配偶宮",s:s2,t:t2});
   // 3 家庭：年支（生肖）
   let s3=0,t3;const r3=zhiRel(ya,yb).map(x=>x[0]),sa=fa.shengxiao,sb=fb.shengxiao;
   if(r3.includes("合")){s3=6;t3=`生肖${sa}與${sb}六合，雙方家庭容易接納彼此。`;}
@@ -1316,7 +1318,8 @@ function calcPair(A,B,fa,fb){
   else if(r3.includes("沖")){s3=-6;t3=`生肖${sa}與${sb}相沖，原生家庭習慣差異大，面對長輩要多協調。`;}
   else if(r3.includes("害")||r3.includes("刑")){s3=-4;t3=`生肖${sa}與${sb}相${r3.includes("害")?"害":"刑"}，容易因第三方意見產生誤會。`;}
   else t3=`生肖${sa}與${sb}無明顯沖合，家庭面向中性。`;
-  score+=s3;rows.push({k:"家庭與長輩",sub:"年支生肖",s:s3,t:t3});
+  if(kid){if(r3.includes("合")||sameSanhe(ya,yb))t3=`生肖${sa}與${sb}${r3.includes("合")?"六":"三"}合，價值觀與家庭氣氛容易相容，親子溝通的底子好。`;else if(r3.includes("沖"))t3=`生肖${sa}與${sb}相沖，世代觀念差異較大，孩子成長到有主見時，較容易各持己見。`;else if(r3.includes("害")||r3.includes("刑"))t3=`生肖${sa}與${sb}相${r3.includes("害")?"害":"刑"}，容易因長輩、老師等第三方意見產生誤會，管教原則要一致。`;}
+  score+=s3;rows.push({k:kid?"家庭氣氛":"家庭與長輩",sub:"年支生肖",s:s3,t:t3});
   // 4 能量互補：五行
   const weak=c=>{const m=Math.min(...Object.values(c));return Object.keys(c).filter(k=>c[k]===m);};
   const wA=weak(A.count),wB=weak(B.count),giveB=wA.filter(w=>B.count[w]>=2),giveA=wB.filter(w=>A.count[w]>=2);
@@ -1330,30 +1333,35 @@ function calcPair(A,B,fa,fb){
   rows.push({k:"星座元素",sub:`${SIGNS[sgA]}×${SIGNS[sgB]}`,s:s6,t:`${SIGNS[sgA]}座屬${SIGN_EL(sgA)}象、${SIGNS[sgB]}座屬${SIGN_EL(sgB)}象，${rn}：${rt}。`});
   score=Math.max(40,Math.min(98,Math.round(score)));
   const level=score>=85?"高度契合":score>=75?"契合":score>=65?"有基礎，需要磨合":"差異大，需用心經營";
-  return {score,level,rows,ab,ba,A,B,sgA,sgB};
+  return {score,level,rows,ab,ba,A,B,sgA,sgB,kid};
 }
 function renderPair(p,name){
   const cls=s=>s>0?"he":s<0?"chong":"xing";
-  $('pairOut').innerHTML=`<div class="pair-score"><div class="ring" style="--p:${p.score}"><b>${p.score}</b><small>契合度</small></div><div><div class="t-title">${esc(p.level)}</div><p class="hint" style="margin:4px 0 0">你：${esc(p.A.dayMaster)}日主・${SIGNS[p.sgA]}座　｜　${esc(name)}：${esc(p.B.dayMaster)}日主・${SIGNS[p.sgB]}座</p></div></div>
+  $('pairOut').innerHTML=`<div class="pair-score"><div class="ring" style="--p:${p.score}"><b>${p.score}</b><small>${p.kid?"親子契合":"契合度"}</small></div><div><div class="t-title">${esc(p.level)}</div><p class="hint" style="margin:4px 0 0">${p.kid?"父母":"你"}：${esc(p.A.dayMaster)}日主・${SIGNS[p.sgA]}座　｜　${esc(name)}：${esc(p.B.dayMaster)}日主・${SIGNS[p.sgB]}座</p></div></div>
   <ul class="ps-list" style="margin-top:14px">${p.rows.map(r=>`<li><b>${r.k}<br><small style="color:var(--muted)">${esc(r.sub)}</small></b><span>${r.s?`<span class="rel ${cls(r.s)}">${r.s>0?"加分":"留意"}</span>`:""}${esc(r.t)}</span></li>`).join("")}</ul>
-  <p class="hint">分數依日主、配偶宮、生肖、五行互補與星座元素加總，僅反映兩人差異大小，不代表緣分的判決。</p>`;
+  <p class="hint">${p.kid?"分數依日主、日支、生肖、五行互補與星座元素加總，只反映親子個性差異大小，不代表孩子的好壞或未來成就。":"分數依日主、配偶宮、生肖、五行互補與星座元素加總，僅反映兩人差異大小，不代表緣分的判決。"}</p>`;
 }
+const KID_PROTOCOL=`親子合盤額外規則：
+⑥ 這是父母（【你】）與子女（【${"${name}"}】）的親子關係，不是伴侶：不談戀愛、婚姻、配偶宮、吸引力，改談親子互動、教養方式與孩子的個性需求。
+⑦ 只談相處與溝通，不預測孩子的學業成績、健康、壽命、婚姻或成就；不給孩子貼「難帶」「不孝」「剋父母」等標籤。
+⑧ 建議以父母能做的事為主，並依孩子成長階段（幼兒、學齡、青春期、成年）各給一句提醒時，只寫原則、不寫年份預測。`;
 function buildPairPrompt(p,fa,fb,name,rel){
-  const pil=b=>b.pillars.map(x=>x[0]+x[1]).join("、");
-  return `你是「撥雲見日」命理網站的合盤解讀者。用台灣繁體中文、白話、溫和直接。關係是「${rel}」，建議要符合這種關係。
+  const pil=b=>b.pillars.map(x=>x[0]+x[1]).join("、"),kid=rel==="子女";
+  const fmt=kid?`{"summary":"親子關係總論：兩人個性異同與相處底色，120–180 字","mode":"教養互動：父母習慣怎麼帶、孩子需要怎樣被對待，100–150 字","strength":"這段親子關係的優勢，80–120 字","friction":"最容易起衝突的地雷與原因，80–120 字","communication":"給父母的溝通與教養建議，80–120 字","actions":["父母可以做的具體建議1","建議2","建議3"]}`:`{"summary":"兩人關係總論與適合度，120–180 字","mode":"相處模式：誰主導、誰照顧、日常互動的樣子，100–150 字","strength":"這段關係的優勢，80–120 字","friction":"最容易起衝突的地雷與原因，80–120 字","communication":"給兩人的溝通建議，80–120 字","actions":["具體相處建議1","建議2","建議3"]}`;
+  return `你是「撥雲見日」命理網站的${kid?"親子":""}合盤解讀者。用台灣繁體中文、白話、溫和直接。關係是「${kid?"子女：你是父母，"+name+"是你的孩子":rel}」，建議要符合這種關係。
 ${PAIR_PROTOCOL}
-另外不用「凶」字眼。只輸出 JSON。
+${kid?KID_PROTOCOL.replace("${name}",name)+"\n":""}另外不用「凶」字眼。只輸出 JSON。
 
-【你】四柱 ${pil(p.A)}；日主 ${p.A.dayMaster}；五行 ${Object.entries(p.A.count).map(([k,v])=>k+v).join(" ")}；${fa.gender?"男":"女"}；${SIGNS[p.sgA]}座。
-【${name}】四柱 ${pil(p.B)}${p.B.hourKnown?"":"（時辰不詳）"}；日主 ${p.B.dayMaster}；五行 ${Object.entries(p.B.count).map(([k,v])=>k+v).join(" ")}；${fb.gender?"男":"女"}；${SIGNS[p.sgB]}座。
+【你${kid?"（父母）":""}】四柱 ${pil(p.A)}；日主 ${p.A.dayMaster}；五行 ${Object.entries(p.A.count).map(([k,v])=>k+v).join(" ")}；${fa.gender?"男":"女"}；${SIGNS[p.sgA]}座。
+【${name}${kid?"（子女）":""}】四柱 ${pil(p.B)}${p.B.hourKnown?"":"（時辰不詳）"}；日主 ${p.B.dayMaster}；五行 ${Object.entries(p.B.count).map(([k,v])=>k+v).join(" ")}；${fb.gender?"男":"女"}；${SIGNS[p.sgB]}座。
 【規則分析】契合度 ${p.score}（${p.level}）；${p.rows.map(r=>r.k+"："+r.t).join(" ")}
 
 JSON 格式：
-{"summary":"兩人關係總論與適合度，120–180 字","mode":"相處模式：誰主導、誰照顧、日常互動的樣子，100–150 字","strength":"這段關係的優勢，80–120 字","friction":"最容易起衝突的地雷與原因，80–120 字","communication":"給兩人的溝通建議，80–120 字","actions":["具體相處建議1","建議2","建議3"]}`;
+${fmt}`;
 }
-function renderPairAI(r){
+function renderPairAI(r,kid){
   const item=(t,x)=>x?`<div class="ai-item"><h3>${t}</h3><p>${esc(x)}</p></div>`:"";
-  $('pairAI').innerHTML=`<h3 class="w-h">AI 相處分析 <span class="tag ai" style="font-size:11px">AI 生成．僅供參考</span></h3><div class="ai-block">${item("關係總論",r.summary)}${item("相處模式",r.mode)}${item("關係優勢",r.strength)}${item("衝突地雷",r.friction)}${item("溝通建議",r.communication)}</div>${Array.isArray(r.actions)&&r.actions.length?`<h3 style="font-size:15px;color:var(--gold);font-family:var(--body);margin-top:12px">相處建議</h3><ol style="margin:4px 0 0;padding-left:20px">${r.actions.slice(0,3).map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}`;
+  $('pairAI').innerHTML=`<h3 class="w-h">AI 相處分析 <span class="tag ai" style="font-size:11px">AI 生成．僅供參考</span></h3><div class="ai-block">${item("關係總論",r.summary)}${item(kid?"教養互動":"相處模式",r.mode)}${item("關係優勢",r.strength)}${item("衝突地雷",r.friction)}${item(kid?"溝通與教養建議":"溝通建議",r.communication)}</div>${Array.isArray(r.actions)&&r.actions.length?`<h3 style="font-size:15px;color:var(--gold);font-family:var(--body);margin-top:12px">${kid?"給父母的建議":"相處建議"}</h3><ol style="margin:4px 0 0;padding-left:20px">${r.actions.slice(0,3).map(x=>`<li>${esc(x)}</li>`).join("")}</ol>`:""}`;
 }
 $('pairForm').addEventListener('submit',async e=>{
   e.preventDefault();const st=$('pairSt');
@@ -1362,13 +1370,14 @@ $('pairForm').addEventListener('submit',async e=>{
   const me=runLocal();if(!me)return;$('ex1').hidden=true;
   const [y,m,d]=$('pBirth').value.split('-').map(Number),fb={y,m,d,hour:Number($('pHour').value),gender:Number($('pGender').value)};
   const B=calcBazi(fb),fbx={...fb,shengxiao:B.shengxiao},fa={...me.f,shengxiao:me.b.shengxiao};
-  const name=$('pName').value.trim()||"對方",rel=$('pRel').value;
-  const p=calcPair(me.b,B,fa,fbx);renderPair(p,name);$('pairAI').innerHTML="";
+  const rel=$('pRel').value,name=$('pName').value.trim()||(rel==="子女"?"孩子":"對方");
+  if(rel==="子女"&&$('pBirth').value<=$('birth').value){st.textContent='關係選「子女」時，孩子的生日應晚於你的生日，請確認兩邊的日期。';$('pBirth').focus();return}
+  const p=calcPair(me.b,B,fa,fbx,rel);renderPair(p,name);$('pairAI').innerHTML="";
   const inArtifact=!!(window.claude&&window.claude.use);const sample=inArtifact?await claude.use("sample"):SITE_AI;
   if(!sample){st.textContent='契合度已算出。這個檢視環境無法使用 AI 相處分析。';return}
   if(qLeft('pair')<=0){st.textContent='契合度已算出。今天的 2 份 AI 相處分析已用完，明天 00:00 重置。';return}
   $('pairBtn').disabled=true;st.innerHTML='<span class="spin">✶</span> 契合度已算出，AI 相處分析撰寫中，約 20–40 秒…';
-  try{const P=tw(buildPairPrompt(p,fa,fb,name,rel));const r=auditAI(await sample.json(P,inArtifact?{modelTier:"default"}:{modelTier:"default",kind:"pair"}),P);renderPairAI(r||{});qUse('pair');st.textContent='完成。結果僅供參考。';}
+  try{const P=tw(buildPairPrompt(p,fa,fb,name,rel));const r=auditAI(await sample.json(P,inArtifact?{modelTier:"default"}:{modelTier:"default",kind:"pair"}),P);renderPairAI(r||{},p.kid);qUse('pair');st.textContent='完成。結果僅供參考。';}
   catch(err){const map={daily_limit:"今天的 2 份 AI 相處分析已用完，明天 00:00 重置。",not_granted:"你未允許本頁使用 Claude，AI 分析已略過。",rate_limited:"使用次數已達上限，請稍後再試。",invalid_json:"AI 回覆格式有誤，請再按一次。",network:"網路連線失敗，請稍後再試。"};st.textContent=map[err&&err.code]||("AI 分析暫時失敗，請稍後再試。（錯誤代碼："+((err&&err.code)||"unknown")+"）");}
   finally{$('pairBtn').disabled=false;}
 });
