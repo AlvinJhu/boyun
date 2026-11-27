@@ -5,7 +5,9 @@ import assert from "node:assert/strict";
 process.env.ANTHROPIC_API_KEY = "sk-test";
 delete process.env.KV_REST_API_URL; delete process.env.UPSTASH_REDIS_REST_URL;
 let upstream = 0;
-globalThis.fetch = async () => {
+let override = null; // 個別測試可暫時改寫上游回應（SDK 建立時已抓住這個 fetch）
+globalThis.fetch = async (...a) => {
+  if (override) return override(...a);
   upstream++;
   return new Response(JSON.stringify({ id: "msg_1", type: "message", role: "assistant", model: "m", content: [{ type: "text", text: "{\"ok\":1}" }], stop_reason: "end_turn", stop_sequence: null, usage: { input_tokens: 1, output_tokens: 1 } }), { status: 200, headers: { "content-type": "application/json" } });
 };
@@ -34,4 +36,24 @@ test("pair 用完 2 次後被擋，read 與 deep 額度不受影響", async () =
 test("未知的 kind 一律算 read", async () => {
   await call("read", "device0002", "5.6.7.8"); await call("bogus", "device0002", "5.6.7.8");
   const third = await call("read", "device0002", "5.6.7.8"); assert.equal(third.status, 429);
+});
+
+test("非 API 例外：回 server_error 並附錯誤摘要，方便排查", async () => {
+  override = async () => new Response("<html>not json</html>", { status: 200, headers: { "content-type": "application/json" } });
+  try {
+    const r = await call("read", "device0099", "9.9.9.9");
+    assert.equal(r.status, 500);
+    assert.equal(r.body.code, "server_error");
+    assert.match(r.body.detail, /^\w+: /);
+    console.log("server_error case ->", JSON.stringify(r.body));
+  } finally { override = null; }
+});
+
+test("逾時：回 timeout（504），不回 server_error", async () => {
+  override = async () => { const e = new Error("The operation was aborted due to timeout"); e.name = "AbortError"; throw e; };
+  try {
+    const r = await call("read", "device0098", "9.9.9.8");
+    assert.equal(r.status, 504);
+    assert.equal(r.body.code, "timeout");
+  } finally { override = null; }
 });
